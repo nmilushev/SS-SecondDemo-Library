@@ -1,2 +1,2 @@
-# SS-SecondDemo-Library
-The project contans the improved version of the first demo
+# SS-FirstDemo-Library
+This repo contaijns the project for the second SS Demo
