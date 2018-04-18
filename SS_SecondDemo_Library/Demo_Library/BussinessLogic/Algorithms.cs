@@ -7,32 +7,45 @@ namespace Demo_Library.BussinessLogic
 {
     public static class Algorithms
     {
+        delegate bool CompareTo<Tx, Ty>(Tx x, Ty y);
+
+        static bool CompareIntAsc(int x, int y) { return x > y; }
+        static bool CompareIntDesc(int x, int y) { return x < y; }
+        static bool CompareStringAsc(string x, string y)
+        {
+            if (String.Compare(x, y) > 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+        static bool CompareStringDesc(string x, string y)
+        {
+            if (String.Compare(x, y) < 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         //Sorting algorithms
         //Bubble sort
         public static IList<IBook> SortYearBubble(IList<IBook> books, string order)
         {
+            CompareTo<int, int> comparer = null;
+            comparer = order == "asc" ? comparer += CompareIntAsc : comparer += CompareIntDesc;
 
             for (int p = books.Count - 1; p > 0; p--)
             {
                 for (int i = 0; i <= p - 1; i++)
                 {
-                    if (order == "ascending" || order == "asc")
+                    if (comparer(books[i].YearPublished, books[i + 1].YearPublished))
                     {
-                        if (books[i].YearPublished > (books[i + 1].YearPublished))
-                        {
-                            IBook temp = books[i + 1];
-                            books[i + 1] = books[i];
-                            books[i] = temp;
-                        }
-                    }
-                    else
-                    {
-                        if (books[i].YearPublished < (books[i + 1].YearPublished))
-                        {
-                            IBook temp = books[i + 1];
-                            books[i + 1] = books[i];
-                            books[i] = temp;
-                        }
+                        IBook temp = books[i + 1];
+                        books[i + 1] = books[i];
+                        books[i] = temp;
                     }
                 }
             }
@@ -42,32 +55,22 @@ namespace Demo_Library.BussinessLogic
 
         public static IList<IBook> SortAuthorNameBubble(IList<IBook> books, string order)
         {
+            CompareTo<string, string> comparer = null;
+            comparer = order == "asc" ? comparer += CompareStringAsc : comparer += CompareStringDesc;
 
             for (int p = books.Count - 1; p > 0; p--)
             {
                 for (int i = 0; i <= p - 1; i++)
                 {
-                    if (order == "ascending" || order == "asc")
+                    if (comparer(books[i].Author.Name, books[i + 1].Author.Name))
                     {
-                        if (String.Compare(books[i].Author.Name, (books[i + 1].Author.Name)) > 0)
-                        {
-                            IBook temp = books[i + 1];
-                            books[i + 1] = books[i];
-                            books[i] = temp;
-                        }
-                    }
-                    else
-                    {
-                        if (String.Compare(books[i].Author.Name, (books[i + 1].Author.Name)) < 0)
-                        {
-                            IBook temp = books[i + 1];
-                            books[i + 1] = books[i];
-                            books[i] = temp;
-                        }
+                        IBook temp = books[i + 1];
+                        books[i + 1] = books[i];
+                        books[i] = temp;
                     }
                 }
             }
-              
+
             return books;
         }
 
@@ -100,37 +103,24 @@ namespace Demo_Library.BussinessLogic
         }
         private static IList<IBook> SortYearMergeHelper(IList<IBook> leftPart, IList<IBook> rightPart, string order)
         {
+            CompareTo<int, int> comparer = null;
+            comparer = order == "asc" ? comparer += CompareIntAsc : comparer += CompareIntDesc;
+
             IList<IBook> result = new List<IBook>();
 
             while (leftPart.Count > 0 || rightPart.Count > 0)
             {
                 if (leftPart.Count > 0 && rightPart.Count > 0)
                 {
-                    if (order == "ascending" || order == "asc")
+                    if (comparer(rightPart.First().YearPublished, leftPart.First().YearPublished))
                     {
-                        if (leftPart.First().YearPublished <= rightPart.First().YearPublished)
-                        {
-                            result.Add(leftPart.First());
-                            leftPart.Remove(leftPart.First());
-                        }
-                        else
-                        {
-                            result.Add(rightPart.First());
-                            rightPart.Remove(rightPart.First());
-                        }
+                        result.Add(leftPart.First());
+                        leftPart.Remove(leftPart.First());
                     }
                     else
                     {
-                        if (leftPart.First().YearPublished > rightPart.First().YearPublished)
-                        {
-                            result.Add(leftPart.First());
-                            leftPart.Remove(leftPart.First());
-                        }
-                        else
-                        {
-                            result.Add(rightPart.First());
-                            rightPart.Remove(rightPart.First());
-                        }
+                        result.Add(rightPart.First());
+                        rightPart.Remove(rightPart.First());
                     }
                 }
                 else if (leftPart.Count > 0)
@@ -175,37 +165,24 @@ namespace Demo_Library.BussinessLogic
         }
         private static IList<IBook> SortAuthorMergeHelper(IList<IBook> leftPart, IList<IBook> rightPart, string order)
         {
+            CompareTo<string, string> comparer = null;
+            comparer = order == "asc" ? comparer += CompareStringAsc : comparer += CompareStringDesc;
+
             IList<IBook> result = new List<IBook>();
 
             while (leftPart.Count > 0 || rightPart.Count > 0)
             {
                 if (leftPart.Count > 0 && rightPart.Count > 0)
                 {
-                    if (order == "ascending" || order == "asc")
+                    if (comparer(rightPart.First().Author.Name, leftPart.First().Author.Name))
                     {
-                        if (String.Compare(leftPart.First().Author.Name, rightPart.First().Author.Name) <= 0)
-                        {
-                            result.Add(leftPart.First());
-                            leftPart.Remove(leftPart.First());
-                        }
-                        else
-                        {
-                            result.Add(rightPart.First());
-                            rightPart.Remove(rightPart.First());
-                        }
+                        result.Add(leftPart.First());
+                        leftPart.Remove(leftPart.First());
                     }
                     else
                     {
-                        if (String.Compare(leftPart.First().Author.Name, rightPart.First().Author.Name) > 0)
-                        {
-                            result.Add(leftPart.First());
-                            leftPart.Remove(leftPart.First());
-                        }
-                        else
-                        {
-                            result.Add(rightPart.First());
-                            rightPart.Remove(rightPart.First());
-                        }
+                        result.Add(rightPart.First());
+                        rightPart.Remove(rightPart.First());
                     }
                 }
                 else if (leftPart.Count > 0)
