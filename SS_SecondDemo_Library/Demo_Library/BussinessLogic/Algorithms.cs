@@ -11,11 +11,12 @@ namespace Demo_Library.BussinessLogic
         //Bubble sort
         public static IList<IBook> SortYearBubble(IList<IBook> books, string order)
         {
-            if (order == "ascending" || order == "asc")
+
+            for (int p = books.Count - 1; p > 0; p--)
             {
-                for (int p = books.Count - 1; p > 0; p--)
+                for (int i = 0; i <= p - 1; i++)
                 {
-                    for (int i = 0; i <= p - 1; i++)
+                    if (order == "ascending" || order == "asc")
                     {
                         if (books[i].YearPublished > (books[i + 1].YearPublished))
                         {
@@ -24,13 +25,7 @@ namespace Demo_Library.BussinessLogic
                             books[i] = temp;
                         }
                     }
-                }
-            }
-            else if (order == "descending" || order == "desc")
-            {
-                for (int p = books.Count - 1; p > 0; p--)
-                {
-                    for (int i = 0; i <= p - 1; i++)
+                    else
                     {
                         if (books[i].YearPublished < (books[i + 1].YearPublished))
                         {
@@ -41,21 +36,18 @@ namespace Demo_Library.BussinessLogic
                     }
                 }
             }
-            else
-            {
-                throw new ArgumentException(OutputMessages.InvalidOrderType);
-            }
 
             return books;
         }
 
         public static IList<IBook> SortAuthorNameBubble(IList<IBook> books, string order)
         {
-            if (order == "ascending" || order == "asc")
+
+            for (int p = books.Count - 1; p > 0; p--)
             {
-                for (int p = books.Count - 1; p > 0; p--)
+                for (int i = 0; i <= p - 1; i++)
                 {
-                    for (int i = 0; i <= p - 1; i++)
+                    if (order == "ascending" || order == "asc")
                     {
                         if (String.Compare(books[i].Author.Name, (books[i + 1].Author.Name)) > 0)
                         {
@@ -64,13 +56,7 @@ namespace Demo_Library.BussinessLogic
                             books[i] = temp;
                         }
                     }
-                }
-            }
-            else if (order == "descending" || order == "desc")
-            {
-                for (int p = books.Count - 1; p > 0; p--)
-                {
-                    for (int i = 0; i <= p - 1; i++)
+                    else
                     {
                         if (String.Compare(books[i].Author.Name, (books[i + 1].Author.Name)) < 0)
                         {
@@ -81,11 +67,7 @@ namespace Demo_Library.BussinessLogic
                     }
                 }
             }
-            else
-            {
-                throw new ArgumentException(OutputMessages.InvalidOrderType);
-            }
-
+              
             return books;
         }
 
@@ -137,7 +119,7 @@ namespace Demo_Library.BussinessLogic
                             rightPart.Remove(rightPart.First());
                         }
                     }
-                    else if (order == "descending" || order == "desc")
+                    else
                     {
                         if (leftPart.First().YearPublished > rightPart.First().YearPublished)
                         {
@@ -149,10 +131,6 @@ namespace Demo_Library.BussinessLogic
                             result.Add(rightPart.First());
                             rightPart.Remove(rightPart.First());
                         }
-                    }
-                    else
-                    {
-                        throw new ArgumentException(OutputMessages.InvalidOrderType);
                     }
                 }
                 else if (leftPart.Count > 0)
@@ -216,7 +194,7 @@ namespace Demo_Library.BussinessLogic
                             rightPart.Remove(rightPart.First());
                         }
                     }
-                    else if (order == "descending" || order == "desc")
+                    else
                     {
                         if (String.Compare(leftPart.First().Author.Name, rightPart.First().Author.Name) > 0)
                         {
@@ -228,10 +206,6 @@ namespace Demo_Library.BussinessLogic
                             result.Add(rightPart.First());
                             rightPart.Remove(rightPart.First());
                         }
-                    }
-                    else
-                    {
-                        throw new ArgumentException(OutputMessages.InvalidOrderType);
                     }
                 }
                 else if (leftPart.Count > 0)
