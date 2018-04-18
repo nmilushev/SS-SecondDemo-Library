@@ -7,16 +7,10 @@ namespace Demo_Library.Commands
 {
     public class CommandInterpreter : ICommandInterpreter
     {
-        //private IRepository bookRepository;
-        //private IAuthorFactory authorFactory;
-        //private IBookFactory bookFactory;
         private IServiceProvider serviceProvider;
 
-        public CommandInterpreter(IServiceProvider serviceProvider/*IRepository bookRepository, IAuthorFactory authorFactory, IBookFactory bookFactory*/)
+        public CommandInterpreter(IServiceProvider serviceProvider)
         {
-            //this.bookRepository = bookRepository;
-            //this.authorFactory = authorFactory;
-            //this.bookFactory = bookFactory;
             this.serviceProvider = serviceProvider;
         }
 

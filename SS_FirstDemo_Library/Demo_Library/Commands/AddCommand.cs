@@ -14,13 +14,19 @@ namespace Demo_Library.Commands
         private IBookFactory bookFactory;
         [Inject]
         private IAuthorFactory authorFactory;
+        [Inject]
+        private IReader reader;
+        [Inject]
+        private IWriter writer;
 
-        public AddCommand(string commandName, IRepository bookRepository, IBookFactory bookFactory, IAuthorFactory authorFactory) 
+        public AddCommand(string commandName, IRepository bookRepository, IBookFactory bookFactory, IAuthorFactory authorFactory, IReader reader, IWriter writer) 
             : base(commandName)
         {
             this.BookRepository = bookRepository;
             this.BookFactory = bookFactory;
             this.AuthorFactory = authorFactory;
+            this.Reader = reader;
+            this.Writer = writer;
         }
 
         public IRepository BookRepository
@@ -39,29 +45,41 @@ namespace Demo_Library.Commands
             private set { this.authorFactory = value; }
         }
 
+        public IReader Reader
+        {
+            get { return this.reader; }
+            private set { this.reader = value; }
+        }
+
+        public IWriter Writer
+        {
+            get { return this.writer; }
+            private set { this.writer = value; }
+        }
+
         public override string Execute()
         {
-            Console.WriteLine("Book type:");
-            string bookType = Console.ReadLine();
-            Console.WriteLine(OutputMessages.InputISBN);
+            writer.WriteLine("Book type:"); 
+            string bookType = reader.ReadLine();
+            writer.WriteLine(OutputMessages.InputISBN);
             long resultISBN = 0L;
-            bool isValid = long.TryParse(Console.ReadLine(), out resultISBN);
+            bool isValid = long.TryParse(reader.ReadLine(), out resultISBN);
             if (!isValid)
             {
                 throw new ArgumentException(OutputMessages.InvalidISBN);
             }
-            Console.WriteLine("Title:");
-            string title = Console.ReadLine();
-            Console.WriteLine("Author:");
-            string authorName = Console.ReadLine();
-            Console.WriteLine($"Author birthdate ({dateFormat}):");
-            DateTime authorBday = DateTime.ParseExact(Console.ReadLine(), dateFormat, CultureInfo.InvariantCulture);
-            Console.WriteLine("Book genre:");
-            string bookGenre = Console.ReadLine();
-            Console.WriteLine("Year published:");
-            int yearPublished = int.Parse(Console.ReadLine());
-            Console.WriteLine("Length:");
-            int length = int.Parse(Console.ReadLine());
+            writer.WriteLine("Title:");
+            string title = reader.ReadLine();
+            writer.WriteLine("Author:");
+            string authorName = reader.ReadLine();
+            writer.WriteLine($"Author birthdate ({dateFormat}):");
+            DateTime authorBday = DateTime.ParseExact(reader.ReadLine(), dateFormat, CultureInfo.InvariantCulture);
+            writer.WriteLine("Book genre:");
+            string bookGenre = reader.ReadLine();
+            writer.WriteLine("Year published:");
+            int yearPublished = int.Parse(reader.ReadLine());
+            writer.WriteLine("Length:");
+            int length = int.Parse(reader.ReadLine());
 
             IAuthor author = this.AuthorFactory.CreateAuthor(authorName, authorBday);
             IBook bookToAdd = this.BookFactory.CreateBook(bookType, resultISBN, title, author, bookGenre, yearPublished, length);

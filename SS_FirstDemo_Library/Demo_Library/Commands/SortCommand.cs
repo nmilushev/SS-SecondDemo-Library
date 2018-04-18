@@ -11,11 +11,17 @@ namespace Demo_Library.Commands
         private Stopwatch stopwatch = new Stopwatch();
         [Inject]
         private IRepository bookRepository;
-      
-        public SortCommand(string commandName, IRepository bookRepository)
+        [Inject]
+        private IReader reader;
+        [Inject]
+        private IWriter writer;
+
+        public SortCommand(string commandName, IRepository bookRepository, IReader reader, IWriter writer)
             : base(commandName)
         {
             this.BookRepository = bookRepository;
+            this.Reader = reader;
+            this.Writer = writer;
         }
 
         public IRepository BookRepository
@@ -24,12 +30,24 @@ namespace Demo_Library.Commands
             private set { this.bookRepository = value; }
         }
 
+        public IReader Reader
+        {
+            get { return this.reader; }
+            private set { this.reader = value; }
+        }
+
+        public IWriter Writer
+        {
+            get { return this.writer; }
+            private set { this.writer = value; }
+        }
+
         public override string Execute()
         {
-            Console.WriteLine(OutputMessages.ChooseAlgorithm);
-            int chooseAlgorithm = int.Parse(Console.ReadLine());
-            Console.WriteLine(OutputMessages.ChooseOrder);
-            string order = Console.ReadLine().ToLower();
+            writer.WriteLine(OutputMessages.ChooseAlgorithm);
+            int chooseAlgorithm = int.Parse(reader.ReadLine());
+            writer.WriteLine(OutputMessages.ChooseOrder);
+            string order = reader.ReadLine().ToLower();
             if (chooseAlgorithm == 1)
             {
                 stopwatch.Start();

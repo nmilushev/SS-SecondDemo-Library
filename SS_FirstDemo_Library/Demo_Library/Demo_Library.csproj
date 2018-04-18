@@ -57,6 +57,8 @@
     <Compile Include="Commands\RemoveCommand.cs" />
     <Compile Include="Commands\SearchCommand.cs" />
     <Compile Include="Commands\SortCommand.cs" />
+    <Compile Include="ConsoleReader.cs" />
+    <Compile Include="ConsoleWriter.cs" />
     <Compile Include="Data\BookRepository.cs" />
     <Compile Include="Factrories\AuthorFactory.cs" />
     <Compile Include="Factrories\BookFactory.cs" />
@@ -66,8 +68,10 @@
     <Compile Include="Interfaces\IBookFactory.cs" />
     <Compile Include="Interfaces\ICommandInterpreter.cs" />
     <Compile Include="Interfaces\IExecutable.cs" />
+    <Compile Include="Interfaces\IReader.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IRunnable.cs" />
+    <Compile Include="Interfaces\IWriter.cs" />
     <Compile Include="Models\Author.cs" />
     <Compile Include="Models\BookModels\AudioBook.cs" />
     <Compile Include="Models\BookModels\Book.cs" />

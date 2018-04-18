@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Demo_Library.Interfaces;
 
 namespace Demo_Library.Commands
@@ -8,10 +7,16 @@ namespace Demo_Library.Commands
     {
         [Inject]
         private IRepository bookRepository;
-       
-        public PrintCommand(string commandName, IRepository bookRepository) 
+        [Inject]
+        private IReader reader;
+        [Inject]
+        private IWriter writer;
+
+        public PrintCommand(string commandName, IRepository bookRepository, IReader reader, IWriter writer) 
             : base(commandName)
         {
+            this.Reader = reader;
+            this.Writer = writer;
             this.BookRepository = bookRepository;
         }
 
@@ -20,28 +25,39 @@ namespace Demo_Library.Commands
             get { return this.bookRepository; }
             private set { this.bookRepository = value; }
         }
+        public IReader Reader
+        {
+            get { return this.reader; }
+            private set { this.reader = value; }
+        }
+
+        public IWriter Writer
+        {
+            get { return this.writer; }
+            private set { this.writer = value; }
+        }
 
         public override string Execute()
         {
-            Console.WriteLine("all / number of books");
-            string secondArgument = Console.ReadLine();
+            writer.WriteLine("all / number of books");
+            string secondArgument = reader.ReadLine();
             int result;
             bool validBooksToPrint = int.TryParse(secondArgument, out result);
 
             if (validBooksToPrint)
             {
-                Console.WriteLine();
+                writer.WriteLine();
                 foreach (IBook book in this.BookRepository.Books.Take(result))
                 {
-                    Console.WriteLine(book);
+                    writer.WriteLine(book.ToString());
                 }
             }
             else
             {
-                Console.WriteLine();
+                writer.WriteLine();
                 foreach (IBook book in this.BookRepository.Books)
                 {
-                    Console.WriteLine(book);
+                    writer.WriteLine(book.ToString());
                 }
             }
 

@@ -14,7 +14,9 @@ namespace Demo_Library
             IServiceProvider serviceProvider = ConfigureServices();
 
             ICommandInterpreter commandInterpreter = new CommandInterpreter(serviceProvider);
-            IRunnable engine = new Engine(commandInterpreter);
+            IReader reader = new ConsoleReader();
+            IWriter writer = new ConsoleWriter();
+            IRunnable engine = new Engine(commandInterpreter, reader, writer);
             engine.Run();
         }
 
@@ -24,6 +26,8 @@ namespace Demo_Library
 
             services.AddTransient<IBookFactory, BookFactory>();
             services.AddTransient<IAuthorFactory, AuthorFactory>();
+            services.AddTransient<IReader, ConsoleReader>();
+            services.AddTransient<IWriter, ConsoleWriter>();
             services.AddSingleton<IRepository, BookRepository>();
 
             IServiceProvider serviceProvider = services.BuildServiceProvider();

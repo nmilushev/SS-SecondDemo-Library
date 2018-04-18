@@ -9,17 +9,33 @@ namespace Demo_Library
     public class Engine : IRunnable
     {
         private ICommandInterpreter commanInterpreter;
+        private IReader reader;
+        private IWriter writer;
 
-        public Engine(ICommandInterpreter commanInterpreter)
+        public Engine(ICommandInterpreter commanInterpreter, IReader reader, IWriter writer)
         {
             this.commanInterpreter = commanInterpreter;
+            this.Reader = reader;
+            this.Writer = writer;
+        }
+
+        public IReader Reader
+        {
+            get { return this.reader; }
+            private set { this.reader = value; }
+        }
+
+        public IWriter Writer
+        {
+            get { return this.writer; }
+            private set { this.writer = value; }
         }
 
         public void Run()
         {
-            Console.WriteLine(OutputMessages.LibraryManagementHome);
+            writer.WriteLine(OutputMessages.LibraryManagementHome);
             string command = String.Empty;
-            while ((command = Console.ReadLine()) != "end")
+            while ((command = reader.ReadLine()) != "end")
             {
                 try
                 {
@@ -30,7 +46,7 @@ namespace Demo_Library
                     try
                     {
                         string result = (string)method.Invoke(commandResult, null);
-                        Console.WriteLine(result);
+                        writer.WriteLine(result);
                     }
                     catch (TargetInvocationException tie)
                     {
@@ -39,11 +55,11 @@ namespace Demo_Library
                 }
                 catch (ArgumentException ae)
                 {
-                    Console.WriteLine(ae.Message);
+                    writer.WriteLine(ae.Message);
                 }
                 catch (NotImplementedException nie)
                 {
-                    Console.WriteLine(nie.Message);
+                    writer.WriteLine(nie.Message);
                 }
             }
         }
